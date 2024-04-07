@@ -153,7 +153,7 @@ const Chat: React.FC<ChatProps> = ({ initialText, pdfText }) => {
     <div className="chat">
       {renderResponse()}
       <form onSubmit={handleOnSendMessage} className="chat-form">
-        <input name="input-field" type="text" placeholder="Say anything" onChange={(e) => setInput(e.target.value)} value={input} />
+        <input name="input-field" type="text" placeholder="Ask anything" onChange={(e) => setInput(e.target.value)} value={input} />
         <button type="submit" className="send-button" />
       </form>
     </div>

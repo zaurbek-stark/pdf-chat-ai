@@ -6,9 +6,10 @@ import { MdCloudUpload } from "react-icons/md";
 type Props = {
   setPdfText: React.Dispatch<React.SetStateAction<string>>;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  setSelectedFile: React.Dispatch<React.SetStateAction<File>>;
 };
 
-const PdfUploader: React.FC<Props> = ({ setPdfText, setIsLoading }) => {
+const PdfUploader: React.FC<Props> = ({ setPdfText, setIsLoading, setSelectedFile }) => {
   const [error, setError] = useState('');
   const [isDragOver, setIsDragOver] = useState(false);
 
@@ -26,6 +27,7 @@ const PdfUploader: React.FC<Props> = ({ setPdfText, setIsLoading }) => {
     pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
     if (!pdfFile) return;
+    setSelectedFile(pdfFile);
 
     const reader = new FileReader();
     reader.onload = async (event) => {
@@ -36,7 +38,7 @@ const PdfUploader: React.FC<Props> = ({ setPdfText, setIsLoading }) => {
           (pdfDoc) => {
             const numPages = pdfDoc.numPages;
             if (numPages > 4) {
-              setError('You uploaded a long PDF mate. Unfortunately only the first 4 pages will be consider since this is a free project.');
+              setError('Please note that due to the limitations of our free service, only the first 4 pages will be considered for processing.');
             }
             for(let i = 1; i <= Math.min(numPages, 4); i++) {
               pdfDoc.getPage(i).then((page) => {

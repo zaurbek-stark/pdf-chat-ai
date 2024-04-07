@@ -4,12 +4,14 @@ import React, { useEffect, useState } from 'react';
 import Chat from './components/Chat';
 import { fetchOpenAIResponse } from './utils/fetchOpenAIResponse';
 import PdfUploader from './components/PdfUploader';
+import PDFViewer from './components/PDFViewer';
 
 export default function Home() {
   const [showChat, setShowChat] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [initialText, setInitialText] = useState<string>();
   const [pdfText, setPdfText] = useState<string>('');
+  const [selectedFile, setSelectedFile] = useState<File>();
   console.log('pdfText:', pdfText);
 
   useEffect(() => {
@@ -37,11 +39,18 @@ export default function Home() {
           <p className="instructions-text">{!showChat ? 'Start the interview with Bob The Interviewer.' : 'Answer Bob\'s questions.'}</p>
           {!showChat ? (
             <div className='request-form-wrapper'>
-              <PdfUploader setIsLoading={setIsLoading} setPdfText={setPdfText} />
+              <PdfUploader setIsLoading={setIsLoading} setPdfText={setPdfText} setSelectedFile={setSelectedFile} />
               {isLoading && <div className="loading-spinner"></div>}
             </div>
           ) : (
-            <Chat initialText={initialText} pdfText={pdfText} />
+            <div style={{ display: 'flex', width: '100%' }}>
+              <div style={{ width: '50%' }}>
+                <PDFViewer file={selectedFile as File} />
+              </div>
+              <div style={{ width: '50%' }}>
+                <Chat initialText={initialText} pdfText={pdfText} />
+              </div>
+            </div>
           )}
         </div>
       </div>

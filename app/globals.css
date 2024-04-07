@@ -14,7 +14,7 @@ body {
 .App {
   text-align: center;
   background-color: #040d17;
-  height: 100vh;
+  min-height: 100vh;
   color: white;
   display: flex;
   margin: 0;
@@ -22,8 +22,27 @@ body {
 
 .container {
   width: 100%;
-  max-width: 920px;
+  /* max-width: 1200px; */
   margin: auto;
+}
+
+.pdf-document .react-pdf__Page {
+  display: inline-block;
+  width: auto;
+  margin-bottom: 10px; /* Reduce whitespace between pages */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add subtle shadow for separation */
+  min-width: -webkit-fill-available !important;
+}
+
+.pdf-page {
+  padding: 5px;
+  background-color: #f0f0f0; /* Gray background for each page */
+  margin-bottom: 15px; /* Space between pages */
+}
+
+.react-pdf__Page__canvas {
+  width: 100% !important;
+  height: auto !important;
 }
 
 .logoBox {
@@ -65,13 +84,13 @@ h1 {
 .chat-form {
   position: absolute;
   bottom: 0;
-  left: 0;
-  right: 0;
-  width: 700px;
+  /* left: 0; */
+  /* right: 0; */
+  width: 50%;
   margin: 30px auto;
   box-sizing: border-box;
   padding-left: 70px;
-  padding-right: 30px;
+  padding-right: 70px;
 }
 
 .chat-form input[type='text'] {
@@ -88,7 +107,7 @@ h1 {
 
 .chat-form > button {
   position: absolute;
-  right: 40px;
+  right: 80px;
   top: 5px;
 }
 
@@ -204,7 +223,7 @@ h1 {
 }
 
 .chat {
-  width: 700px;
+  /* width: 700px; */
   height: calc(100vh - 200px);
   margin: auto;
 }
@@ -215,8 +234,22 @@ h1 {
   text-align: left;
   padding: 30px;
   overflow: auto;
-  height: calc(100vh - 300px);
+  height: calc(100vh - 200px);
   box-sizing: border-box;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent; /* Makes the track background transparent */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #ccc; /* Light grey scrollbar handle */
+  border-radius: 10px; /* Rounded corners on the scrollbar handle */
+}
+
+::-webkit-scrollbar {
+  width: 8px; /* Width of the vertical scrollbar */
+  height: 8px; /* Height of the horizontal scrollbar */
 }
 
 .image-box {
