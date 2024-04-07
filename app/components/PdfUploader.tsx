@@ -6,9 +6,10 @@ import { MdCloudUpload } from "react-icons/md";
 type Props = {
   setPdfText: React.Dispatch<React.SetStateAction<string>>;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  setSelectedFile: React.Dispatch<React.SetStateAction<File>>;
 };
 
-const PdfUploader: React.FC<Props> = ({ setPdfText, setIsLoading }) => {
+const PdfUploader: React.FC<Props> = ({ setPdfText, setIsLoading, setSelectedFile }) => {
   const [error, setError] = useState('');
   const [isDragOver, setIsDragOver] = useState(false);
 
@@ -26,6 +27,7 @@ const PdfUploader: React.FC<Props> = ({ setPdfText, setIsLoading }) => {
     pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
     if (!pdfFile) return;
+    setSelectedFile(pdfFile);
 
     const reader = new FileReader();
     reader.onload = async (event) => {

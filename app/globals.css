@@ -14,7 +14,7 @@ body {
 .App {
   text-align: center;
   background-color: #040d17;
-  height: 100vh;
+  min-height: 100vh;
   color: white;
   display: flex;
   margin: 0;
@@ -22,8 +22,27 @@ body {
 
 .container {
   width: 100%;
-  max-width: 920px;
+  max-width: 1200px;
   margin: auto;
+}
+
+.pdf-document .react-pdf__Page {
+  display: inline-block;
+  width: auto;
+  margin-bottom: 10px; /* Reduce whitespace between pages */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add subtle shadow for separation */
+  min-width: -webkit-fill-available !important;
+}
+
+.pdf-page {
+  padding: 5px;
+  background-color: #f0f0f0; /* Gray background for each page */
+  margin-bottom: 15px; /* Space between pages */
+}
+
+.react-pdf__Page__canvas {
+  width: 100% !important;
+  height: auto !important;
 }
 
 .logoBox {
@@ -65,8 +84,8 @@ h1 {
 .chat-form {
   position: absolute;
   bottom: 0;
-  left: 0;
-  right: 0;
+  /* left: 0; */
+  /* right: 0; */
   width: 700px;
   margin: 30px auto;
   box-sizing: border-box;
