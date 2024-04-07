@@ -35,7 +35,10 @@ const PdfUploader: React.FC<Props> = ({ setPdfText, setIsLoading }) => {
         loadingTask.promise.then(
           (pdfDoc) => {
             const numPages = pdfDoc.numPages;
-            for(let i = 1; i <= Math.min(numPages, 5); i++) {
+            if (numPages > 4) {
+              setError('You uploaded a long PDF mate. Unfortunately only the first 4 pages will be consider since this is a free project.');
+            }
+            for(let i = 1; i <= Math.min(numPages, 4); i++) {
               pdfDoc.getPage(i).then((page) => {
                 page.getTextContent().then((textContent) => {
                   const extractedText = mergeTextContent(textContent);
