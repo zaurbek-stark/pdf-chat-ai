@@ -22,7 +22,7 @@ body {
 
 .container {
   width: 100%;
-  max-width: 1200px;
+  /* max-width: 1200px; */
   margin: auto;
 }
 
@@ -86,11 +86,11 @@ h1 {
   bottom: 0;
   /* left: 0; */
   /* right: 0; */
-  width: 700px;
+  width: 50%;
   margin: 30px auto;
   box-sizing: border-box;
   padding-left: 70px;
-  padding-right: 30px;
+  padding-right: 70px;
 }
 
 .chat-form input[type='text'] {
@@ -107,7 +107,7 @@ h1 {
 
 .chat-form > button {
   position: absolute;
-  right: 40px;
+  right: 80px;
   top: 5px;
 }
 
@@ -223,7 +223,7 @@ h1 {
 }
 
 .chat {
-  width: 700px;
+  /* width: 700px; */
   height: calc(100vh - 200px);
   margin: auto;
 }
@@ -234,8 +234,22 @@ h1 {
   text-align: left;
   padding: 30px;
   overflow: auto;
-  height: calc(100vh - 300px);
+  height: calc(100vh - 200px);
   box-sizing: border-box;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent; /* Makes the track background transparent */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #ccc; /* Light grey scrollbar handle */
+  border-radius: 10px; /* Rounded corners on the scrollbar handle */
+}
+
+::-webkit-scrollbar {
+  width: 8px; /* Width of the vertical scrollbar */
+  height: 8px; /* Height of the horizontal scrollbar */
 }
 
 .image-box {
