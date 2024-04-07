@@ -16,8 +16,10 @@ export default function Home() {
     const startInterview = async (text: string) => {
       const messageToSend = `PDF TEXT: ${pdfText}`;
       await fetchOpenAIResponse({
-        messages: [{role: 'user', content: messageToSend }],
-        setMessage: (msg) => setInitialText(msg)});
+        messages: [{ role: 'user', content: messageToSend }],
+        setMessage: (msg) => setInitialText(msg),
+        setError: (error) => console.error(error)
+      });
     }
 
     if (isLoading && pdfText !== '') {
@@ -32,16 +34,16 @@ export default function Home() {
     <main className="App">
       <div className='container'>
         <div className="form-wrapper">
-        <p className="instructions-text">{!showChat ? 'Start the interview with Bob The Interviewer.' : 'Answer Bob\'s questions.'}</p>
-        {!showChat ? (
-          <div className='request-form-wrapper'>
-            <PdfUploader setIsLoading={setIsLoading} setPdfText={setPdfText} />
-            {isLoading && <div className="loading-spinner"></div>}
-          </div>
-        ) : (
-          <Chat initialText={initialText} pdfText={pdfText} />
-        )}
-      </div>
+          <p className="instructions-text">{!showChat ? 'Start the interview with Bob The Interviewer.' : 'Answer Bob\'s questions.'}</p>
+          {!showChat ? (
+            <div className='request-form-wrapper'>
+              <PdfUploader setIsLoading={setIsLoading} setPdfText={setPdfText} />
+              {isLoading && <div className="loading-spinner"></div>}
+            </div>
+          ) : (
+            <Chat initialText={initialText} pdfText={pdfText} />
+          )}
+        </div>
       </div>
     </main>
   );
