@@ -4,7 +4,7 @@
 
 This app allows you to chat with your PDFs.
 
-<img src="app-demo.gif" alt="app demo" width=600>
+<img src="https://s9.gifyu.com/images/SVJIG.gif" alt="app demo" width=600>
 
 The app is built with Next.js. It uses PDF.js to parse the PDF file and preview it, and the NVIDIA Nim API with the `mixtral-8x7b-instruct-v0.1` AI model to chat with the PDF text.
 
