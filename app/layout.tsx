@@ -15,8 +15,8 @@ import Image from 'next/image';
 function Header() {
   return (
     <header style={{ position: "absolute", display: "flex", justifyContent: "space-between", padding: 10, width: '100%' }}>
-      <div className='logoBox'>
-        <Image src="/logo.png" alt="InterviewGPT logo" width="200" height="75" />
+      <div>
+        <Image src="/logo.png" alt="PDF Chat logo" width="100" height="75" />
       </div>
       <div className="flex space-x-4 justify-center items-center">
         <SignedIn>
