@@ -43,11 +43,11 @@ const PDFViewer = ({ file }: { file: File }) => {
   }, [numPages]); // Reinitialize observer when numPages changes
 
   return (
-    <div>
-      <header style={{ textAlign: 'center', margin: '10px 0', position: 'sticky', top: 0, zIndex: 1000 }}>
+    <>
+      <div className="text-center rounded-3xl my-2 z-50 absolute bottom-0 right-4 bg-blue-600 text-white py-1 px-4">
         {pageNumber}/{numPages}
-      </header>
-      <div style={{ height: '80vh', overflowY: 'scroll' }}>
+      </div>
+      <div className="h-[300px] md:h-full overflow-y-scroll">
         <Document file={file} onLoadSuccess={onDocumentLoadSuccess} className="pdf-document">
           {Array.from(new Array(numPages), (el, index) => (
             <div ref={el => pageElementsRef.current[index] = el} data-page-number={index + 1} key={index}>
@@ -62,7 +62,7 @@ const PDFViewer = ({ file }: { file: File }) => {
           ))}
         </Document>
       </div>
-    </div>
+    </>
   );
 };
 

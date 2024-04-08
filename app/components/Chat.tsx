@@ -4,23 +4,10 @@ import { useState, useRef, useEffect } from 'react';
 import { fetchOpenAIResponse } from '../utils/fetchOpenAIResponse';
 import Image from 'next/image';
 import MarkdownRenderer from './MarkdownRenderer';
-import { useUser } from '@clerk/nextjs';
+import { useUser, useClerk } from '@clerk/nextjs';
 
 type ChatProps = {
-  initialText?: string;
   pdfText: string;
-};
-
-const userAuthor = {
-  username: 'User',
-  id: 1,
-  avatarUrl: '/user-avatar.jpg',
-};
-
-const aiAuthor = {
-  username: 'Bob The Interviewer',
-  id: 2,
-  avatarUrl: '/bob.jpg',
 };
 
 type Message = {
@@ -39,29 +26,38 @@ type aiMessage = {
   content: string;
 }
 
+const userAuthor = {
+  username: 'User',
+  id: 1,
+  avatarUrl: '/user-avatar.jpg',
+};
+
+const aiAuthor = {
+  username: 'Bob The Interviewer',
+  id: 2,
+  avatarUrl: '/bob.jpg',
+};
+
 const MAX_MESSAGES_PER_DAY = 20;
 
-const Chat: React.FC<ChatProps> = ({ initialText, pdfText }) => {
+const Chat: React.FC<ChatProps> = ({ pdfText }) => {
   const [input, setInput] = useState('');;
   const initialMessage = {
     author: aiAuthor,
-    text: initialText ?? 'Hello, I am Bob the PDF AI Chatter. How can I help you?',
+    text: 'Hello, I am Bob the PDF AI Chatter. How can I help you?',
     type: 'text',
     timestamp: +new Date(),
   };
-  const pdfMessage = {
-    role: 'system',
-    content: `Here is text extracted from a PDF. Answer questions on it:\n\n${pdfText}`
-  };
   const initialAiMessage = {
     role: 'assistant',
-    content: initialText ?? 'Hello, I am Bob the PDF AI Chatter. How can I help you?',
+    content: 'Hello, I am Bob the PDF AI Chatter. How can I help you?',
   };
   const [chatMessages, setChatMessages] = useState<Message[]>([initialMessage]);
-  const [aiMessages, setAiMessages] = useState<aiMessage[]>([pdfMessage, initialAiMessage]);
+  const [aiMessages, setAiMessages] = useState<aiMessage[]>([]);
   const chatContainer = useRef<HTMLDivElement>(null);
 
   const { user } = useUser();
+  const { openSignUp } = useClerk();
 
   const scroll = () => {
     const { offsetHeight, scrollHeight, scrollTop } = chatContainer.current as HTMLDivElement
@@ -71,15 +67,27 @@ const Chat: React.FC<ChatProps> = ({ initialText, pdfText }) => {
   }
 
   useEffect(() => {
+    if (pdfText === '') return;
+    const pdfMessage = {
+      role: 'system',
+      content: `Here is text extracted from a PDF.
+Take the personality of the character that would be the most fiting to be an expert
+on the material of the text. (e.g. if you get a text about chemistry, your personality
+should be that of a chemistry teacher.)
+Answer to the user's questions based on it:\n\n${pdfText}`
+    };
+    setAiMessages([pdfMessage]);
+  }, [pdfText]);
+
+  useEffect(() => {
     scroll();
   }, [chatMessages]);
 
   const handleOnSendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-      console.log('user:', user);
     
     if (!user){
-      alert("Please sign in first.");
+      openSignUp();
       return;
     }
 
@@ -123,7 +131,9 @@ const Chat: React.FC<ChatProps> = ({ initialText, pdfText }) => {
         }]
       ),
       setError: (error) => {
-        alert(error);
+        if (error.status === 401) {
+          openSignUp();
+        }
       }
     });
     setAiMessages(messages => [...messages, {role: 'user', content: message }, {role: 'assistant', content: response }]);

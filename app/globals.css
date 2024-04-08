@@ -293,11 +293,11 @@ h1 {
 }
 
 .user-chat > .avatar {
-  box-shadow: 0 0 24px #ffffff4f;
+  /* box-shadow: 0 0 24px #ffffff4f; */
 }
 
 .ai-chat > .avatar {
-  box-shadow: 0 0 24px #7d24eb9e;
+  /* box-shadow: 0 0 24px #7d24eb9e; */
 }
 
 .bold {
