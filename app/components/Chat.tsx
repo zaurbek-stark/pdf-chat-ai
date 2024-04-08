@@ -41,6 +41,7 @@ const aiAuthor = {
 const MAX_MESSAGES_PER_DAY = 20;
 
 const Chat: React.FC<ChatProps> = ({ pdfText }) => {
+  console.log('pdfText:', pdfText);
   const [input, setInput] = useState('');;
   const initialMessage = {
     author: aiAuthor,
@@ -65,19 +66,6 @@ const Chat: React.FC<ChatProps> = ({ pdfText }) => {
       chatContainer.current?.scrollTo(0, scrollHeight + 200)
     }
   }
-
-  useEffect(() => {
-    if (pdfText === '') return;
-    const pdfMessage = {
-      role: 'system',
-      content: `Here is text extracted from a PDF.
-Take the personality of the character that would be the most fiting to be an expert
-on the material of the text. (e.g. if you get a text about chemistry, your personality
-should be that of a chemistry teacher.)
-Answer to the user's questions based on it:\n\n${pdfText}`
-    };
-    setAiMessages([pdfMessage]);
-  }, [pdfText]);
 
   useEffect(() => {
     scroll();
@@ -118,7 +106,21 @@ Answer to the user's questions based on it:\n\n${pdfText}`
       timestamp: +new Date()
     }]);
 
-    const messageToSend = [...aiMessages, {role: 'user', content: message }];
+    const messageToSend = [...aiMessages, {
+      role: 'user',
+      content: `ROLE: You are an expert at analyzing text and answering questions on it.
+-------
+TASK:
+1. The user will provide a text from a PDF. Take the personality of the character that
+would be the most fiting to be an expert on the material of the text.
+(e.g. if you get a text about chemistry, your personality should be that of a chemistry teacher.)
+2. Answer to the user's questions based on it. Your replies are short (less than 150 characters) and to the point, unless
+specified otherwise.
+-------
+PDF TEXT: ${pdfText}
+-------
+USER MESSAGE: ${message}` 
+    }];
 
     const response = await fetchOpenAIResponse({
       messages: messageToSend, 

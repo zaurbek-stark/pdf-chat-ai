@@ -1,15 +1,13 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Chat from './components/Chat';
-import { fetchOpenAIResponse } from './utils/fetchOpenAIResponse';
 import PdfUploader from './components/PdfUploader';
 import PDFViewer from './components/PDFViewer';
 
 export default function Home() {
   const [pdfText, setPdfText] = useState<string>('');
   const [selectedFile, setSelectedFile] = useState<File>();
-  console.log('pdfText:', pdfText);
 
   return (
     <main className="App">

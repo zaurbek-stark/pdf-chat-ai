@@ -26,6 +26,15 @@ body {
   margin: 100px auto 50px;
 }
 
+.author {
+  color: white;
+}
+
+.author a {
+  color: #fffc11;
+  text-decoration: underline;
+}
+
 .pdf-document .react-pdf__Page:not(:last-child) {
   margin-bottom: 15px;
 }
@@ -232,7 +241,7 @@ h1 {
   flex-direction: column;
   text-align: left;
   overflow: auto;
-  height: calc(100vh - 200px);
+  height: calc(100vh - 230px);
   box-sizing: border-box;
 }
 
@@ -322,6 +331,10 @@ h1 {
   .container {
     margin: 75px auto 20px;
     height: auto;
+  }
+
+  .author {
+    font-size: 12px;
   }
 
   .response {

@@ -15,8 +15,9 @@ import Image from 'next/image';
 function Header() {
   return (
     <header style={{ position: "absolute", display: "flex", justifyContent: "space-between", padding: 10, width: '100%' }}>
-      <div>
+      <div className="block md:flex items-end gap-3">
         <Image src="/logo.png" alt="PDF Chat logo" width="100" height="75" />
+        <span className="author">Built by <a href='https://twitter.com/ZaurbekStark' target='_blank'>The Codebender</a> & <a href='https://www.youtube.com/@thecodebendermaster' target='_blank'>CodeBlazer</a></span>
       </div>
       <div className="flex space-x-4 justify-center items-center">
         <SignedIn>
