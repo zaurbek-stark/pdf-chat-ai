@@ -5,13 +5,13 @@ import { MdCloudUpload } from "react-icons/md";
 
 type Props = {
   setPdfText: React.Dispatch<React.SetStateAction<string>>;
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  setSelectedFile: React.Dispatch<React.SetStateAction<File>>;
+  setSelectedFile: React.Dispatch<React.SetStateAction<File | undefined>>;
 };
 
-const PdfUploader: React.FC<Props> = ({ setPdfText, setIsLoading, setSelectedFile }) => {
+const PdfUploader: React.FC<Props> = ({ setPdfText, setSelectedFile }) => {
   const [error, setError] = useState('');
   const [isDragOver, setIsDragOver] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const mergeTextContent = (textContent: TextContent) => {
     return textContent.items
@@ -22,7 +22,7 @@ const PdfUploader: React.FC<Props> = ({ setPdfText, setIsLoading, setSelectedFil
       .join('');
   };
 
-  const readResume = async (pdfFile: File | undefined) => {
+  const readPdf = async (pdfFile: File | undefined) => {
     const pdfjs = await import('pdfjs-dist');
     pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
@@ -38,7 +38,7 @@ const PdfUploader: React.FC<Props> = ({ setPdfText, setIsLoading, setSelectedFil
           (pdfDoc) => {
             const numPages = pdfDoc.numPages;
             if (numPages > 4) {
-              setError('Please note that due to the limitations of our free service, only the first 4 pages will be considered for processing.');
+              alert('Please note that due to the limitations of our free service, only the first 4 pages will be considered for processing.');
             }
             for(let i = 1; i <= Math.min(numPages, 4); i++) {
               pdfDoc.getPage(i).then((page) => {
@@ -83,9 +83,12 @@ const PdfUploader: React.FC<Props> = ({ setPdfText, setIsLoading, setSelectedFil
       if (!file) {
         throw new Error("The PDF wasn't uploaded correctly.");
       }
-      await readResume(file);
+      await readPdf(file);
     } catch (error) {
-      setError('There was an error reading the resume. Please try again.');
+      setError('There was an error reading the PDF. Please try again.');
+    } finally {
+      setIsLoading(false);
+      setIsDragOver(false);
     }
   };
 
@@ -116,33 +119,39 @@ const PdfUploader: React.FC<Props> = ({ setPdfText, setIsLoading, setSelectedFil
         setIsLoading(false);
         return;
       }
-      await readResume(file);
+      await readPdf(file);
     } catch (error) {
       setError('There was an error reading the resume. Please try again.');
     }
   };
 
   return (
-    <div>
+    <>
       <div
         className={`${styles.fileUploadBtnContainer} ${isDragOver ? styles.dragOver : ''}`}
         onDrop={(e: React.DragEvent<HTMLDivElement>) => handleDrop(e)}
         onDragOver={(e: React.DragEvent<HTMLDivElement>) => handleDragOver(e)}
         onDragEnter={(e: React.DragEvent<HTMLDivElement>) => handleDragEnter(e)}
       >
-        <input
-          type="file"
-          id="file-upload"
-          onChange={handleButtonUpload}
-          accept="application/pdf"
-          hidden
-        />
-        <label htmlFor="file-upload" className={`${styles.label} ${styles.mainBtn}`}>
-          <MdCloudUpload /> Upload your PDF
-        </label>
+        {isLoading ? (
+          <div className="loading-spinner"></div>
+        ) : (
+          <>
+            <input
+              type="file"
+              id="file-upload"
+              onChange={handleButtonUpload}
+              accept="application/pdf"
+              hidden
+            />
+            <label htmlFor="file-upload" className={`${styles.label} ${styles.mainBtn}`}>
+              <MdCloudUpload /> Upload your PDF
+            </label>
+          </>
+        )}
       </div>
       {error && <p className={styles.errorMessage}>{error}</p>}
-    </div>
+    </>
   );
 };
 
