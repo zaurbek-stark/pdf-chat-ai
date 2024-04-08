@@ -3,10 +3,15 @@ type Message = {
   content: string;
 }
 
+type Error = {
+  message: string;
+  status: number;
+}
+
 type Props = {
   messages: Message[];
   setMessage: (msg: string) => void;
-  setError: (error: string) => void;
+  setError: (error: Error) => void;
 }
 
 export async function fetchOpenAIResponse({ messages, setMessage, setError }: Props) {
@@ -20,7 +25,7 @@ export async function fetchOpenAIResponse({ messages, setMessage, setError }: Pr
     });
 
     if (response.status === 401) {
-      setError('Please log in to continue.');
+      setError({message: 'Please log in to continue.', status: 401});
       return '';
     }
 
@@ -46,7 +51,7 @@ export async function fetchOpenAIResponse({ messages, setMessage, setError }: Pr
     return text;
   } catch (error) {
     console.error('Error fetching OpenAI response:', error);
-    setError('An error occurred while processing your request. Please try again.');
+    setError({message: 'An error occurred while processing your request. Please try again.', status: 500});
     return '';
   }
 }
